@@ -1,23 +1,33 @@
 <template>
   <div>
-    <img v-if="theme === 'light'" src="./assets/images/bg-desktop-light.jpg" />
-    <img v-else src="./assets/images/bg-desktop-dark.jpg" />
+    <img
+      class="w-full"
+      v-if="theme === 'light'"
+      src="./assets/images/bg-desktop-light.jpg"
+    />
+    <img class="w-full" v-else src="./assets/images/bg-desktop-dark.jpg" />
     <div id="todos-container">
       <div id="todos-header">
         <span>Todo</span>
-        <div @click="toggleTheme" class="cursor-pointer">
+        <div @click="toggleTheme" class="cursor-pointer" title="Toggle theme">
           <img v-if="theme === 'light'" src="./assets/images/icon-moon.svg" />
           <img v-else src="./assets/images/icon-sun.svg" />
         </div>
       </div>
+
+      <AddTodo />
     </div>
   </div>
 </template>
 
 <script>
+  import AddTodo from "./components/AddTodo.vue";
+
   export default {
     name: "App",
-    components: {},
+    components: {
+      AddTodo,
+    },
     data() {
       return {
         theme: "light",
@@ -46,7 +56,7 @@
   }
 
   #todos-container {
-    @apply w-2/4 absolute top-16 inset-x-1/4;
+    @apply w-2/5 absolute top-16 inset-x-1/4;
   }
 
   #todos-header {
