@@ -7,6 +7,7 @@ const store = createStore({
       filteredTodos: [],
       filter: "all",
       theme: "light",
+      screen: "desktop",
     };
   },
   getters: {
@@ -69,6 +70,13 @@ const store = createStore({
     },
     resetFilter(state) {
       state.filter = "all";
+    },
+    changeScreen(state, event) {
+      if (event.currentTarget.innerWidth > 650) {
+        state.screen = "desktop";
+      } else {
+        state.screen = "mobile";
+      }
     },
   },
 });

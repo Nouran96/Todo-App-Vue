@@ -1,12 +1,6 @@
 <template>
   <div>
     <img class="w-full" :src="imageUrl" />
-    <!-- <img
-      class="w-full"
-      v-if="theme === 'light'"
-      src="./assets/images/bg-desktop-light.jpg"
-    />
-    <img class="w-full" v-else src="./assets/images/bg-desktop-dark.jpg" /> -->
     <div id="todos-container">
       <div id="todos-header">
         <span>Todo</span>
@@ -18,6 +12,10 @@
 
       <AddTodo />
       <TodosList />
+
+      <div id="filter" v-if="screen === 'mobile' && todos.length">
+        <TodosFilter />
+      </div>
     </div>
   </div>
 </template>
@@ -26,42 +24,35 @@
   import { mapState } from "vuex";
   import AddTodo from "./components/AddTodo.vue";
   import TodosList from "./components/TodosList.vue";
+  import TodosFilter from "./components/TodosFilter.vue";
 
   export default {
     name: "App",
     components: {
       AddTodo,
       TodosList,
-    },
-    data() {
-      return {
-        screen: "desktop",
-      };
+      TodosFilter,
     },
     computed: {
-      ...mapState(["theme"]),
+      ...mapState(["theme", "screen", "todos"]),
       imageUrl() {
         return require(`./assets/images/bg-${this.screen}-${this.theme}.jpg`);
       },
     },
     created() {
-      window.addEventListener("resize", this.changeImage);
-      window.addEventListener("load", this.changeImage);
+      window.addEventListener("resize", this.changeScreen);
+      window.addEventListener("load", this.changeScreen);
     },
     unmounted() {
-      window.removeEventListener("resize", this.changeImage);
-      window.removeEventListener("load", this.changeImage);
+      window.removeEventListener("resize", this.changeScreen);
+      window.removeEventListener("load", this.changeScreen);
     },
     methods: {
       toggleTheme() {
         this.$store.commit("toggleTheme");
       },
-      changeImage(e) {
-        if (e.currentTarget.innerWidth > 650) {
-          this.screen = "desktop";
-        } else {
-          this.screen = "mobile";
-        }
+      changeScreen(e) {
+        this.$store.commit("changeScreen", e);
       },
     },
   };
@@ -90,5 +81,9 @@
 
   #todos-header span {
     @apply font-bold uppercase tracking-veryWide text-4xl;
+  }
+
+  #filter {
+    @apply text-center my-5 p-4 bg-white dark:bg-darkTodo shadow-md dark:text-white border border-transparent rounded;
   }
 </style>
