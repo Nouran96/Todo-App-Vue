@@ -16,6 +16,10 @@
       <div id="filter" v-if="screen === 'mobile' && todos.length">
         <TodosFilter />
       </div>
+
+      <span id="drag-text" v-if="todos.length"
+        >Drag and drop to reorder list</span
+      >
     </div>
   </div>
 </template>
@@ -85,5 +89,9 @@
 
   #filter {
     @apply text-center my-5 p-4 bg-white dark:bg-darkTodo shadow-md dark:text-white border border-transparent rounded;
+  }
+
+  #drag-text {
+    @apply block text-center text-gray-400 dark:text-gray-600 my-8 text-base bg-transparent;
   }
 </style>

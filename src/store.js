@@ -22,6 +22,9 @@ const store = createStore({
       state.theme = state.theme === "light" ? "dark" : "light";
       document.documentElement.classList.toggle("dark");
     },
+    updateList(state, newList) {
+      state.filteredTodos = newList;
+    },
     addNewTodo(state, todo) {
       state.todos.push({
         id: state.todos.length,

@@ -1,6 +1,36 @@
 <template>
   <div v-if="todos.length">
-    <ul v-if="filteredTodos.length" id="todos-list">
+    <div>
+      <draggable
+        v-model="filteredTodos"
+        group="todos"
+        @start="drag = true"
+        @end="drag = false"
+        item-key="id"
+        id="todos-list"
+        v-if="filteredTodos.length"
+      >
+        <template #item="{element}">
+          <li>
+            <Checkbox
+              :name="'todo-' + element.id"
+              :isChecked="element.completed"
+              @checked="markCompleted($event, element.id)"
+            />
+            <label :for="'todo-' + element.id">
+              <span :class="{ completed: element.completed }">{{
+                element.value
+              }}</span>
+            </label>
+            <img
+              src="../assets/images/icon-cross.svg"
+              @click="deleteTodo(element.id)"
+            />
+          </li>
+        </template>
+      </draggable>
+
+      <!-- <ul v-if="filteredTodos.length" id="todos-list">
       <li v-for="todo in filteredTodos" :key="todo.id">
         <Checkbox
           :name="'todo-' + todo.id"
@@ -15,11 +45,12 @@
           @click="deleteTodo(todo.id)"
         />
       </li>
-    </ul>
+    </ul> -->
 
-    <span class="p-16 text-center block" v-else>No Todos to show</span>
+      <span class="p-16 text-center block" v-else>No Todos to show</span>
 
-    <TodosFooter />
+      <TodosFooter />
+    </div>
   </div>
 </template>
 
@@ -27,14 +58,31 @@
   import Checkbox from "./Checkbox.vue";
   import TodosFooter from "./TodosFooter.vue";
   import { mapState } from "vuex";
+  import draggable from "vuedraggable";
 
   export default {
     name: "TodosList",
     components: {
       Checkbox,
       TodosFooter,
+      draggable,
     },
-    computed: mapState(["todos", "filteredTodos"]),
+    data() {
+      return {
+        drag: false,
+      };
+    },
+    computed: {
+      ...mapState(["todos"]),
+      filteredTodos: {
+        get() {
+          return this.$store.state.filteredTodos;
+        },
+        set(value) {
+          this.$store.commit("updateList", value);
+        },
+      },
+    },
     methods: {
       deleteTodo(id) {
         this.$store.commit("deleteTodo", id);
@@ -62,7 +110,7 @@
   }
 
   #todos-list {
-    @apply bg-white dark:bg-darkTodo mb-5 flex flex-col;
+    @apply bg-white dark:bg-darkTodo mb-5 flex flex-col shadow-none;
   }
 
   #todos-list li {
