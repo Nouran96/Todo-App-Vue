@@ -1,9 +1,10 @@
 <template>
   <div v-if="todos.length">
-    <ul id="todos-list">
-      <li v-for="todo in todos" :key="todo.id">
+    <ul v-if="filteredTodos.length" id="todos-list">
+      <li v-for="todo in filteredTodos" :key="todo.id">
         <Checkbox
           :name="'todo-' + todo.id"
+          :isChecked="todo.completed"
           @checked="markCompleted($event, todo.id)"
         />
         <label :for="'todo-' + todo.id">
@@ -15,25 +16,41 @@
         />
       </li>
     </ul>
+
+    <span class="p-16 text-center block" v-else>No Todos to show</span>
+
+    <TodosFooter />
   </div>
 </template>
 
 <script>
   import Checkbox from "./Checkbox.vue";
+  import TodosFooter from "./TodosFooter.vue";
   import { mapState } from "vuex";
 
   export default {
     name: "TodosList",
     components: {
       Checkbox,
+      TodosFooter,
     },
-    computed: mapState(["todos"]),
+    computed: mapState(["todos", "filteredTodos"]),
     methods: {
       deleteTodo(id) {
         this.$store.commit("deleteTodo", id);
       },
       markCompleted(checked, todoId) {
         this.$store.commit("markCompleted", { checked, todoId });
+      },
+    },
+    watch: {
+      todos: {
+        handler(val) {
+          if (val.length === 0) {
+            this.$store.commit("resetFilter");
+          }
+        },
+        deep: true,
       },
     },
   };
@@ -45,7 +62,7 @@
   }
 
   #todos-list {
-    @apply bg-white dark:bg-darkTodo mb-7 flex flex-col;
+    @apply bg-white dark:bg-darkTodo mb-5 flex flex-col;
   }
 
   #todos-list li {

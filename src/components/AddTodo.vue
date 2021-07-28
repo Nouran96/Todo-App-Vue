@@ -38,6 +38,6 @@
   }
 
   div input {
-    @apply flex-grow outline-none dark:bg-darkTodo dark:text-white;
+    @apply flex-grow outline-none dark:bg-darkTodo dark:text-white w-full;
   }
 </style>

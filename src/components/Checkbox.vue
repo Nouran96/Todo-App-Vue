@@ -3,6 +3,7 @@
     :id="name"
     type="checkbox"
     :disabled="disabled"
+    :checked="isChecked"
     @change="emitCheckValue"
   />
   <div id="label-container">
@@ -16,6 +17,7 @@
     props: {
       disabled: Boolean,
       name: String,
+      isChecked: Boolean,
     },
     methods: {
       emitCheckValue(e) {

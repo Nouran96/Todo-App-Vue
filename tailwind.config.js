@@ -26,6 +26,11 @@ module.exports = {
         borderLight: "hsl(233, 11%, 84%)",
         borderDark: "hsl(229, 14%, 26%)",
       },
+      inset: {
+        thirty: "30%",
+        "1/5": "20%",
+        ten: "10%",
+      },
     },
   },
   variants: {
