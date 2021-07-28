@@ -1,7 +1,12 @@
 <template>
-  <input id="checkbox" type="checkbox" :disabled="disabled" />
+  <input
+    :id="name"
+    type="checkbox"
+    :disabled="disabled"
+    @change="emitCheckValue"
+  />
   <div id="label-container">
-    <label for="checkbox"></label>
+    <label :for="name"></label>
   </div>
 </template>
 
@@ -10,7 +15,14 @@
     name: "Checkbox",
     props: {
       disabled: Boolean,
+      name: String,
     },
+    methods: {
+      emitCheckValue(e) {
+        this.$emit("checked", e.target.checked);
+      },
+    },
+    emits: ["checked"],
   };
 </script>
 
@@ -20,7 +32,7 @@
   }
 
   #label-container {
-    @apply w-20px h-20px p-px bg-borderLight dark:bg-borderDark my-2 mx-4 relative rounded-half;
+    @apply min-w-20px min-h-20px p-px bg-borderLight dark:bg-borderDark my-2 mx-4 relative rounded-half;
   }
 
   input:not(:disabled) + #label-container:hover,

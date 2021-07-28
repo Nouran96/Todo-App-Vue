@@ -15,28 +15,53 @@
         </div>
       </div>
 
-      <AddTodo />
+      <AddTodo @addTodo="addNewTodo" />
+      <TodosList
+        :todos="todos"
+        @deleteTodo="deleteTodo"
+        @markCompleted="markCompleted"
+      />
     </div>
   </div>
 </template>
 
 <script>
   import AddTodo from "./components/AddTodo.vue";
+  import TodosList from "./components/TodosList.vue";
 
   export default {
     name: "App",
     components: {
       AddTodo,
+      TodosList,
     },
     data() {
       return {
         theme: "light",
+        todos: [],
       };
     },
     methods: {
       toggleTheme() {
         this.theme = this.theme === "light" ? "dark" : "light";
         document.documentElement.classList.toggle("dark");
+      },
+      addNewTodo(todo) {
+        this.todos.push({ id: this.todos.length, value: todo });
+      },
+      deleteTodo(id) {
+        const todoToDeletedIndex = this.todos.findIndex(
+          (todo) => todo.id === id
+        );
+
+        if (todoToDeletedIndex > -1) {
+          this.todos.splice(todoToDeletedIndex, 1);
+        }
+      },
+      markCompleted(checked, todoId) {
+        const todoIndex = this.todos.findIndex((todo) => todo.id === todoId);
+
+        this.todos[todoIndex].completed = checked;
       },
     },
   };

@@ -13,14 +13,18 @@ module.exports = {
       letterSpacing: {
         veryWide: "20px",
       },
-      width: {
+      minWidth: {
         "20px": "20px",
       },
-      height: {
+      minHeight: {
         "20px": "20px",
       },
       borderRadius: {
         half: "50%",
+      },
+      borderColor: {
+        borderLight: "hsl(233, 11%, 84%)",
+        borderDark: "hsl(229, 14%, 26%)",
       },
     },
   },

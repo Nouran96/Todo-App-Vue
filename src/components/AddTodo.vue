@@ -1,13 +1,13 @@
 <template>
-  <form @submit.prevent>
-    <Checkbox :disabled="true" />
+  <div>
+    <Checkbox :disabled="true" name="newTodo" />
     <input
       type="text"
       v-model="newTodo"
       placeholder="Create a new todo..."
       @keyup.enter="addTodo"
     />
-  </form>
+  </div>
 </template>
 
 <script>
@@ -25,18 +25,20 @@
     },
     methods: {
       addTodo() {
+        this.$emit("addTodo", this.newTodo);
         this.newTodo = "";
       },
     },
+    emits: ["addTodo"],
   };
 </script>
 
 <style scoped>
-  form {
+  div {
     @apply bg-white dark:bg-darkTodo rounded py-3 px-4 mt-8 mb-7 flex;
   }
 
-  form input {
+  div input {
     @apply flex-grow outline-none dark:bg-darkTodo dark:text-white;
   }
 </style>
