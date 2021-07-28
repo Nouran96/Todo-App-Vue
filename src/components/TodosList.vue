@@ -25,6 +25,7 @@
             <img
               src="../assets/images/icon-cross.svg"
               @click="deleteTodo(element.id)"
+              @touchstart="deleteTodo(element.id)"
             />
           </li>
         </template>
@@ -122,7 +123,7 @@
   }
 
   #todos-list li img {
-    @apply mx-4 hidden;
+    @apply mx-4 block sm:hidden;
   }
 
   #todos-list li:hover > img {

@@ -5,6 +5,7 @@
     :disabled="disabled"
     :checked="isChecked"
     @change="emitCheckValue"
+    @touchstart="emitCheckValue"
   />
   <div id="label-container">
     <label :for="name"></label>
