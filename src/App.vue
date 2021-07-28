@@ -2,7 +2,7 @@
   <div>
     <img
       class="w-full"
-      v-if="theme === 'light'"
+      v-if="$store.state.theme === 'light'"
       src="./assets/images/bg-desktop-light.jpg"
     />
     <img class="w-full" v-else src="./assets/images/bg-desktop-dark.jpg" />
@@ -10,17 +10,16 @@
       <div id="todos-header">
         <span>Todo</span>
         <div @click="toggleTheme" class="cursor-pointer" title="Toggle theme">
-          <img v-if="theme === 'light'" src="./assets/images/icon-moon.svg" />
+          <img
+            v-if="$store.state.theme === 'light'"
+            src="./assets/images/icon-moon.svg"
+          />
           <img v-else src="./assets/images/icon-sun.svg" />
         </div>
       </div>
 
-      <AddTodo @addTodo="addNewTodo" />
-      <TodosList
-        :todos="todos"
-        @deleteTodo="deleteTodo"
-        @markCompleted="markCompleted"
-      />
+      <AddTodo />
+      <TodosList />
     </div>
   </div>
 </template>
@@ -35,33 +34,9 @@
       AddTodo,
       TodosList,
     },
-    data() {
-      return {
-        theme: "light",
-        todos: [],
-      };
-    },
     methods: {
       toggleTheme() {
-        this.theme = this.theme === "light" ? "dark" : "light";
-        document.documentElement.classList.toggle("dark");
-      },
-      addNewTodo(todo) {
-        this.todos.push({ id: this.todos.length, value: todo });
-      },
-      deleteTodo(id) {
-        const todoToDeletedIndex = this.todos.findIndex(
-          (todo) => todo.id === id
-        );
-
-        if (todoToDeletedIndex > -1) {
-          this.todos.splice(todoToDeletedIndex, 1);
-        }
-      },
-      markCompleted(checked, todoId) {
-        const todoIndex = this.todos.findIndex((todo) => todo.id === todoId);
-
-        this.todos[todoIndex].completed = checked;
+        this.$store.commit("toggleTheme");
       },
     },
   };

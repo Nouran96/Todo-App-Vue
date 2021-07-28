@@ -15,31 +15,27 @@
         />
       </li>
     </ul>
-
-    <!-- <span>Hello</span> -->
   </div>
 </template>
 
 <script>
   import Checkbox from "./Checkbox.vue";
+  import { mapState } from "vuex";
 
   export default {
     name: "TodosList",
     components: {
       Checkbox,
     },
-    props: {
-      todos: Array,
-    },
+    computed: mapState(["todos"]),
     methods: {
       deleteTodo(id) {
-        this.$emit("deleteTodo", id);
+        this.$store.commit("deleteTodo", id);
       },
       markCompleted(checked, todoId) {
-        this.$emit("markCompleted", checked, todoId);
+        this.$store.commit("markCompleted", { checked, todoId });
       },
     },
-    emits: ["deleteTodo", "markCompleted"],
   };
 </script>
 
@@ -53,11 +49,11 @@
   }
 
   #todos-list li {
-    @apply bg-white dark:bg-darkTodo dark:text-white p-4 flex items-center border-b border-borderLight dark:border-borderDark cursor-pointer;
+    @apply bg-white dark:bg-darkTodo dark:text-white px-4 flex items-center border-b border-borderLight dark:border-borderDark cursor-pointer;
   }
 
   #todos-list li label {
-    @apply flex-grow cursor-pointer;
+    @apply flex-grow cursor-pointer py-4;
   }
 
   #todos-list li img {

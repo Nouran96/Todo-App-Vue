@@ -5,7 +5,7 @@
       type="text"
       v-model="newTodo"
       placeholder="Create a new todo..."
-      @keyup.enter="addTodo"
+      @keyup.enter="addNewTodo"
     />
   </div>
 </template>
@@ -24,12 +24,11 @@
       };
     },
     methods: {
-      addTodo() {
-        this.$emit("addTodo", this.newTodo);
+      addNewTodo() {
+        this.$store.commit("addNewTodo", this.newTodo);
         this.newTodo = "";
       },
     },
-    emits: ["addTodo"],
   };
 </script>
 
