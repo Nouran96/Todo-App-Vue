@@ -1,28 +1,39 @@
 <template>
-  <input
-    :id="name"
-    type="checkbox"
-    :disabled="disabled"
-    :checked="isChecked"
-    @change="emitCheckValue"
-    @touchstart="emitCheckValue"
-  />
-  <div id="label-container">
-    <label :for="name"></label>
+  <input :id="name" type="checkbox" :disabled="disabled" v-model="isChecked" />
+  <div
+    id="label-container"
+    :class="{ 'checked-label-container': isChecked || checked }"
+    @touchstart="touchHandler"
+  >
+    <label
+      :for="name"
+      :class="{ 'checked-label': isChecked || checked }"
+    ></label>
   </div>
 </template>
 
 <script>
   export default {
     name: "Checkbox",
+    data() {
+      return {
+        isChecked: false,
+      };
+    },
     props: {
       disabled: Boolean,
       name: String,
-      isChecked: Boolean,
+      checked: Boolean,
+    },
+    watch: {
+      isChecked(value) {
+        this.$emit("checked", value);
+      },
     },
     methods: {
-      emitCheckValue(e) {
-        this.$emit("checked", e.target.checked);
+      touchHandler(e) {
+        console.log(e);
+        this.isChecked = !this.isChecked;
       },
     },
     emits: ["checked"],
@@ -39,7 +50,7 @@
   }
 
   input:not(:disabled) + #label-container:hover,
-  input:checked + #label-container {
+  .checked-label-container {
     background: linear-gradient(
       to bottom right,
       hsl(192, 100%, 67%) 30%,
@@ -55,7 +66,7 @@
     @apply cursor-pointer;
   }
 
-  input:checked + #label-container label {
+  .checked-label {
     background: linear-gradient(
       to bottom right,
       hsl(192, 100%, 67%) 30%,

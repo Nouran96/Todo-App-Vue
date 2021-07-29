@@ -14,10 +14,13 @@
           <li>
             <Checkbox
               :name="'todo-' + element.id"
-              :isChecked="element.completed"
               @checked="markCompleted($event, element.id)"
+              :checked="element.completed"
             />
-            <label :for="'todo-' + element.id">
+            <label
+              :for="'todo-' + element.id"
+              @touchstart="markCompleted(!element.completed, element.id)"
+            >
               <span :class="{ completed: element.completed }">{{
                 element.value
               }}</span>
@@ -115,6 +118,7 @@
   }
 
   #todos-list li {
+    z-index: 0;
     @apply bg-white dark:bg-darkTodo dark:text-white px-4 flex items-center border-b border-borderLight dark:border-borderDark cursor-pointer;
   }
 
@@ -132,5 +136,9 @@
 
   #todos-list .completed {
     @apply line-through text-gray-600;
+  }
+
+  label {
+    z-index: 3;
   }
 </style>

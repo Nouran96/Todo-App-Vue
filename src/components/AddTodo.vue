@@ -25,8 +25,10 @@
     },
     methods: {
       addNewTodo() {
-        this.$store.commit("addNewTodo", this.newTodo);
-        this.newTodo = "";
+        if (this.newTodo.trim()) {
+          this.$store.commit("addNewTodo", this.newTodo);
+          this.newTodo = "";
+        }
       },
     },
   };
